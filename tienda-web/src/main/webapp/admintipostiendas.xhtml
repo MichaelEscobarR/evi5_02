@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:b="http://bootsfaces.net/ui">
+    
+    <h:head>
+        <title>Tienda App</title>
+    </h:head>
+    
+    <h:body>
+    	<ui:include src="/navbar.xhtml">
+    	
+    	</ui:include>
+    
+           
+           <b:container>
+           	
+           	<b:row>
+           	  	<h:form id="formAdminTiposTiendas">
+           	  	
+           	  	<b:growl id="msgValidaciones" placementFrom="top" showDetail="true" showSummary="true" ></b:growl>
+           	  	
+           	  	
+           	  	
+					<b:panel title="Administración de Tipos de Tiendas" look="primary" collapsible="false" >
+						<b:commandButton look="primary" id="btnAgregar" value="Agregar" size="lg" style="margin-bottom: 20px"  ajax="true" oncomplete="$('#amodal').modal('show')"
+						 				onclick="ajax:adminTiposTiendasController.inicializarComponentes()" update="formRegistroTipoTienda"></b:commandButton>
+						
+						 <b:dataTable id="tblTiposTiendas" style="width:100%" excel="true" csv="true" pdf="true"  value="#{adminTiposTiendasController.tipoTiendas}" var="tipoTienda">
+						    
+						    <b:dataTableColumn label="Descripción" >
+						    	<h:outputText value="#{tipoTienda.descripcion}"></h:outputText>
+						    </b:dataTableColumn>
+
+						    <b:dataTableColumn label="Fecha de creación">
+						   		<h:outputText value="#{tipoTienda.fechaCreacion}"></h:outputText>
+						    </b:dataTableColumn>
+
+						    <b:dataTableColumn label="Fecha de modificación">
+						    	<h:outputText value="#{tipoTienda.fechaModificacion}"></h:outputText>
+						    </b:dataTableColumn>
+						    
+						    <b:dataTableColumn label="Estatus">
+						    	<b:label value="Habilitado" rendered="#{tipoTienda.estatus}" severity="success"></b:label>
+						    	<b:label value="Deshabilitado" rendered="#{!tipoTienda.estatus}" severity="danger"></b:label>
+						    </b:dataTableColumn>
+						    
+						    
+						    <b:dataTableColumn label="Actualizar">
+						    	<b:commandButton icon="pencil" look="success" ajax="true" size="m" update="formRegistroTipoTienda"  
+						    					 oncomplete="$('#amodal').modal('show')" 
+						    					 onclick="ajax:adminTiposTiendasController.cargarInformacionModal(tipoTienda)"></b:commandButton>
+						    
+						    </b:dataTableColumn>
+						    
+						    
+						    
+						    
+						    <b:dataTableColumn label="" />
+					
+  						</b:dataTable>
+						
+					</b:panel>
+           		</h:form>
+           		
+           		<b:modal id="amodal" title="Registro de Tipo de Tienda" styleClass="modalPseudoClass">
+           		
+				  	<b:form id="formRegistroTipoTienda">
+				  	
+				  	<b:inputText id="txtDescripcion" value="#{adminTiposTiendasController.tipoTienda.descripcion}" label="Descripción" colMd="12" 
+				  				required="true" requiredMessage="La descripción es requerida"></b:inputText>
+				  				
+				  				
+				  	<b:switch id="swEstatus" value="#{adminTiposTiendasController.tipoTienda.estatus}" offText="Habilitar" 
+				  			  onText="Deshabilitar" label="Estatus: " offColor="sucess" onColor="danger" colMd="6" 
+				  			  rendered="#{adminTiposTiendasController.tipoTienda.idTipoTienda}" ></b:switch>
+				  	
+				  	<b:row style="margin-bottom: 10px; margin-top:10px">
+				  	
+				  		<b:column colMd="6">
+				  			<b:button id="btnCancelar" value="Cancelar" largeScreen="full-width" look="danger" dismiss="modal" onclick="return false;"></b:button>
+				  		</b:column>
+				  		
+				  		
+				  		<b:column colMd="6">
+				  			<b:commandButton id="btnGuardar" largeScreen="full-width" value="Guardar" look="success" 
+				  							update="formRegistroTipoTienda, formAdminTiposTiendas:tblTiposTiendas, formAdminTiposTiendas:msgValidaciones" 
+				  							oncomplete="$('#amodal').modal('hide')" onclick="ajax:adminTiposTiendasController.guardar()"></b:commandButton>
+				  		</b:column>
+				  	
+				  	</b:row>
+				  	
+				  	</b:form>
+
+				</b:modal>
+
+           	</b:row>
+           </b:container>
+    	
+    </h:body>
+</html>
